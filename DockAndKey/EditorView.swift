@@ -87,7 +87,7 @@ struct EditorView: View {
                 NavigationLink {
                     ExportView(g: g)
                 } label: {
-                    Label("Share & QR sign", systemImage: "square.and.arrow.up")
+                    Label("Send to renter & QR sign", systemImage: "paperplane.fill")
                 }
             }
         }

@@ -13,9 +13,20 @@ struct ExportView: View {
     var body: some View {
         Form {
             Section {
-                Text("The guidebook is one self-contained web file. Share it to your computer or wherever you host web pages, then paste its web address below to make the QR sign.")
+                Text("Text or email the guidebook straight to your renter — it opens right in their phone's browser, no app needed.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
+                if let fileURL {
+                    ShareLink(item: fileURL) {
+                        Label("Send to renter", systemImage: "paperplane.fill")
+                            .font(.headline)
+                    }
+                }
+            } header: {
+                Text("Send the guidebook")
+            }
+
+            Section {
                 if let fileURL {
                     ShareLink(item: fileURL) {
                         Label("Share the guidebook file", systemImage: "doc.richtext")
@@ -28,7 +39,9 @@ struct ExportView: View {
                     Label(copiedCode ? "Copied" : "Copy the page's code", systemImage: "doc.on.doc")
                 }
             } header: {
-                Text("The guidebook page")
+                Text("Put it on a website")
+            } footer: {
+                Text("The guidebook is one self-contained web file. Put it wherever you host web pages, then paste its web address below to make the QR sign.")
             }
 
             Section {
@@ -63,7 +76,7 @@ struct ExportView: View {
                 Text("Print the sign and put it on the fridge. Guests scan it and the guidebook opens in their phone's browser — no app for them.")
             }
         }
-        .navigationTitle("Share & QR sign")
+        .navigationTitle("Send to renter")
         .navigationBarTitleDisplayMode(.inline)
         .task {
             fileURL = HTMLExporter.writeTempFile(for: g, pro: pro.isPro)
