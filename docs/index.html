@@ -1,8 +1,281 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dock &amp; Key</title><link rel="stylesheet" href="style.css"></head><body><main>
-<header><div class="mark">D</div><strong>Dock &amp; Key</strong></header>
-<h1>A guest guidebook your renters actually read.</h1>
-<p>Dock &amp; Key is an iPhone app for vacation-rental hosts. Build your house guide on your phone — Wi-Fi, arrival, house how-tos, dock and lake steps, local picks, checkout — then text it straight to your renter or print a QR sign for the fridge. Guests just tap or scan. Nothing for them to download.</p>
-<p>Coming soon to the App Store.</p>
-<p class="muted"><a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a></p>
-</main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dock &amp; Key — guest guidebooks for vacation rentals</title>
+<meta name="description" content="Dock & Key is an iPhone app for vacation-rental hosts. Build your guest guidebook on your phone, text it to your renter, and print a QR sign for the fridge.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2312312E'/%3E%3Ccircle cx='20' cy='30' r='11' fill='none' stroke='%23D9B26F' stroke-width='6'/%3E%3Crect x='30' y='27' width='27' height='6' rx='1.5' fill='%23D9B26F'/%3E%3Crect x='42' y='33' width='5' height='11' rx='1' fill='%23D9B26F'/%3E%3Crect x='51' y='33' width='5' height='15' rx='1' fill='%23D9B26F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --deep:#12312E; --deep-ink:#E9F1EE; --deep-muted:#A9C2BC;
+  --bg:#F4F7F5; --surface:#FFFFFF; --ink:#13302D; --muted:#56706B; --line:#D7E1DD;
+  --lake:#1F6F6A; --ripple:#7FC4BC; --brass:#D9B26F; --brass-ink:#8A6424;
+  --display:"Zilla Slab",Georgia,serif; --body:"Public Sans",system-ui,-apple-system,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --deep:#0A1A18; --bg:#0F201E; --surface:#16302D; --ink:#E4EEEB; --muted:#9BB3AE; --line:#284541;
+  --lake:#6FC1B8; --brass-ink:#E3C186; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --deep:#0A1A18; --bg:#0F201E; --surface:#16302D; --ink:#E4EEEB; --muted:#9BB3AE; --line:#284541;
+  --lake:#6FC1B8; --brass-ink:#E3C186; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+.band{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.inner{max-width:1080px;margin:0 auto}
+a{color:var(--lake)}
+a:focus-visible,summary:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+h2{font-size:clamp(1.8rem,4vw,2.5rem);line-height:1.1}
+h3{font-size:1.25rem;line-height:1.2}
+p{margin:0}
+.eyebrow{font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brass-ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 16px var(--body);padding:13px 20px;border-radius:10px;text-decoration:none;border:2px solid transparent}
+.btn.primary{background:var(--brass);color:#13302D}
+.btn.ghost{border-color:var(--deep-muted);color:var(--deep-ink)}
+.btn.line{border-color:var(--lake);color:var(--lake)}
+
+/* hero */
+.hero{background:var(--deep);color:var(--deep-ink);padding-block:20px 64px;position:relative;overflow:hidden}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:40px}
+.logo{display:flex;align-items:center;gap:10px;font:700 1.35rem var(--display);color:var(--deep-ink);text-decoration:none}
+.logo svg{width:40px;height:40px}
+.top nav{display:flex;gap:18px;font-size:15px}
+.top nav a{color:var(--deep-muted);text-decoration:none}
+.top nav a:hover{color:var(--deep-ink)}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(2.4rem,6vw,4rem);line-height:1.02;letter-spacing:-.01em;margin-top:12px}
+.hero h1 em{font-style:normal;color:var(--brass)}
+.hero .lede{color:var(--deep-muted);font-size:1.15rem;max-width:34em;margin-top:18px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero .fine{margin-top:16px;font:500 13px var(--mono);color:var(--deep-muted);letter-spacing:.03em}
+.waves{position:absolute;left:0;right:0;bottom:0;width:100%;height:40px;opacity:.5}
+/* phone mock: the guest's view */
+.phone{justify-self:center;width:min(300px,100%);aspect-ratio:9/18.5;background:#F3F6F4;border:10px solid #050D0C;border-radius:38px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);overflow:hidden;display:flex;flex-direction:column;color:#13302D;font-size:13px}
+.ph-top{background:#12312E;color:#E9F1EE;padding:18px 14px 14px;display:grid;gap:2px}
+.ph-top b{font:700 1.15rem var(--display)}
+.ph-top span{font-size:11px;color:#A9C2BC}
+.ph-tabs{display:flex;gap:5px;padding:8px 10px;border-bottom:1px solid #D9E2DF;overflow:hidden}
+.ph-tabs i{flex:none;font-style:normal;font-size:10px;font-weight:600;padding:4px 8px;border-radius:99px;border:1px solid #D9E2DF;background:#fff;white-space:nowrap}
+.ph-tabs i.on{background:#1F6F6A;color:#fff;border-color:#1F6F6A}
+.ph-body{padding:10px;display:grid;gap:8px;align-content:start;flex:1}
+.bub{padding:8px 10px;border-radius:12px;max-width:88%;line-height:1.35}
+.bub.g{justify-self:end;background:#1F6F6A;color:#fff;border-bottom-right-radius:3px}
+.bub.h{background:#fff;border:1px solid #D9E2DF;border-bottom-left-radius:3px}
+.ph-in{margin:10px;padding:9px 11px;border:1px solid #D9E2DF;border-radius:9px;background:#fff;color:#5C716D;font-size:12px}
+
+/* sections */
+.sec{padding-block:72px}
+.sec-head{display:grid;gap:10px;max-width:640px;margin-bottom:36px}
+.sec-head p{color:var(--muted);font-size:1.08rem}
+.alt{background:var(--surface);border-block:1px solid var(--line)}
+.problem{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:6px}
+.q .said{font:600 1.05rem var(--body)}
+.q .said::before{content:"\201C"}.q .said::after{content:"\201D"}
+.q .when{font:500 12px var(--mono);color:var(--muted);letter-spacing:.03em}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;gap:8px;align-content:start;border-top:3px solid var(--lake);padding-top:14px}
+.steps li::before{content:"Step " counter(s);font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--lake)}
+.steps p{color:var(--muted);font-size:.98rem}
+.inside{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 32px;list-style:none;padding:0;margin:0}
+.inside li{display:grid;grid-template-columns:22px 1fr;gap:10px;padding-block:12px;border-bottom:1px solid var(--line)}
+.inside li svg{width:22px;height:22px;color:var(--lake);margin-top:3px}
+.inside b{display:block}
+.inside span{color:var(--muted);font-size:.95rem}
+.plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start;max-width:760px}
+.plan{border:1px solid var(--line);border-radius:16px;padding:24px;display:grid;gap:14px;background:var(--bg)}
+.plan.feat{border:2px solid var(--lake);position:relative}
+.plan.feat::before{content:"One purchase, yours for good";position:absolute;top:-12px;left:20px;background:var(--lake);color:var(--bg);font:600 12px var(--body);padding:3px 10px;border-radius:99px}
+.price{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.price b{font:700 2.4rem var(--display)}
+.price span{color:var(--muted);font-size:.95rem}
+.plan ul{margin:0;padding-left:1.1em;display:grid;gap:6px;font-size:.97rem}
+.compare{margin-top:18px;color:var(--muted);font-size:.95rem;max-width:62ch}
+.faq{display:grid;gap:10px;max-width:760px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px 18px}
+summary{cursor:pointer;font-weight:600;padding-block:14px}
+details p{padding-bottom:16px;color:var(--muted)}
+.get{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.get .who{display:grid;gap:12px}
+.get .who p{color:var(--muted)}
+.store{display:grid;gap:10px;justify-items:start;background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:22px}
+.badge{display:inline-flex;align-items:center;gap:10px;background:#000;color:#fff;border-radius:10px;padding:10px 16px;font:600 15px var(--body);opacity:.85}
+.badge svg{width:22px;height:22px}
+.contact-line{font:500 15px var(--mono);overflow-wrap:anywhere}
+
+footer{background:var(--deep);color:var(--deep-muted);padding-block:28px;font-size:14px}
+footer .inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center}
+footer .logo{font-size:1.1rem}
+footer .logo svg{width:28px;height:28px}
+footer a{color:var(--deep-muted)}
+
+@media (max-width:860px){
+  .hero-grid,.get{grid-template-columns:1fr}
+  .phone{width:min(260px,100%)}
+  .problem,.plans{grid-template-columns:1fr}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .top nav{display:none}
+}
+@media (max-width:520px){
+  .steps,.inside{grid-template-columns:1fr}
+  .sec{padding-block:52px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#12312E"/><circle cx="20" cy="30" r="11" fill="none" stroke="#D9B26F" stroke-width="6"/><path d="M13.5 31.5 q3.25 -3 6.5 0 t6.5 0" fill="none" stroke="#7FC4BC" stroke-width="2.6" stroke-linecap="round"/><rect x="30" y="27" width="27" height="6" rx="1.5" fill="#D9B26F"/><rect x="42" y="33" width="5" height="11" rx="1" fill="#D9B26F"/><rect x="51" y="33" width="5" height="15" rx="1" fill="#D9B26F"/><path d="M8 52 q4 -3 8 0 t8 0 t8 0 t8 0 t8 0 t8 0" fill="none" stroke="#7FC4BC" stroke-width="2.6" stroke-linecap="round"/></symbol>
+  <symbol id="chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="apple" viewBox="0 0 24 24"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.4.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 5c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></symbol>
+</svg>
+
+<header class="hero band">
+  <div class="inner">
+    <div class="top">
+      <a class="logo" href="#top" id="top"><svg aria-hidden="true"><use href="#mark"/></svg>Dock &amp; Key</a>
+      <nav aria-label="Main"><a href="#how">How it works</a><a href="#inside">What's inside</a><a href="#pricing">Pricing</a><a href="#faq">Questions</a></nav>
+    </div>
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow" style="color:var(--brass)">The iPhone app for vacation-rental hosts</p>
+        <h1>Your lake house, <em>answered</em> before they ask.</h1>
+        <p class="lede">Build a guest guidebook on your phone in one sitting: Wi-Fi, arrival, the boat lift, local spots, checkout. Text it straight to your renter or print a QR sign for the fridge. Guests just tap or scan. Nothing for them to download.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#get">Get the app</a>
+          <a class="btn ghost" href="https://claude.ai/artifact/AmtbZ63FR2SyXmxqS5Wfa8" target="_blank" rel="noopener">See a sample guidebook</a>
+        </div>
+        <p class="fine">Free for your first rental · Pro is one purchase, no subscription</p>
+      </div>
+      <div class="phone" aria-label="What a guest sees: the guidebook's Ask the house tab">
+        <div class="ph-top"><span>Your guide to the house</span><b>Welcome to Heron House</b></div>
+        <div class="ph-tabs"><i>Arrival</i><i>Dock &amp; lake</i><i>Eat</i><i class="on">Ask the house</i></div>
+        <div class="ph-body">
+          <div class="bub h">Hi! Ask me about Wi-Fi, checkout, dinner, or anything else in the house.</div>
+          <div class="bub g">How does the boat lift work?</div>
+          <div class="bub h">Turn the key on the dock post to ON, hold DOWN until the boat floats free, then back out slowly.</div>
+          <div class="bub g">What time is checkout?</div>
+          <div class="bub h">Checkout is 10 AM. Start the dishwasher and take the trash to the bin by the drive.</div>
+        </div>
+        <div class="ph-in">Type a question</div>
+      </div>
+    </div>
+  </div>
+  <svg class="waves" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22 Q 50 8 100 22 T 200 22 T 300 22 T 400 22 T 500 22 T 600 22 T 700 22 T 800 22 T 900 22 T 1000 22 T 1100 22 T 1200 22" fill="none" stroke="var(--ripple)" stroke-width="3"/></svg>
+</header>
+
+<main>
+  <section class="sec band">
+    <div class="inner">
+      <div class="sec-head">
+        <p class="eyebrow">Sound familiar?</p>
+        <h2>The same questions, every single booking.</h2>
+      </div>
+      <div class="problem">
+        <div class="q"><span class="said">What's the Wi-Fi password again?</span><span class="when">Friday · 9:47 PM</span></div>
+        <div class="q"><span class="said">How do we get the boat off the lift?</span><span class="when">Saturday · 7:12 AM</span></div>
+        <div class="q"><span class="said">What do we need to do before we leave?</span><span class="when">Sunday · 8:05 AM</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec band alt" id="how">
+    <div class="inner">
+      <div class="sec-head">
+        <p class="eyebrow">How it works</p>
+        <h2>Write it once. Send it to every guest.</h2>
+        <p>No website to set up, no template to wrestle with. If you can fill in a contact card, you can build a guidebook.</p>
+      </div>
+      <ol class="steps">
+        <li><h3>Fill it in</h3><p>Open the app and add the rental's name, arrival details, Wi-Fi and house rules. Short fields, plain words.</p></li>
+        <li><h3>Add the how-tos</h3><p>The hot tub, the thermostat, the boat lift, where the life jackets live. Plus your favorite places to eat.</p></li>
+        <li><h3>Preview as a guest</h3><p>See exactly what your renter will see on their phone before anyone else does.</p></li>
+        <li><h3>Send to renter</h3><p>Tap Send to renter and pick Messages or Mail. Or print the QR sign for the fridge.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec band" id="inside">
+    <div class="inner">
+      <div class="sec-head">
+        <p class="eyebrow">What's inside</p>
+        <h2>Everything a guest asks, in one link.</h2>
+      </div>
+      <ul class="inside">
+        <li><svg aria-hidden="true"><use href="#chk"/></svg><div><b>Arrival and Wi-Fi</b><span>Check-in time, parking, and the Wi-Fi network and password in plain sight.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#chk"/></svg><div><b>Dock and lake</b><span>Boat lift steps, swim rules and life jacket spots. Switch it off if your rental has no dock.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#chk"/></svg><div><b>House how-tos</b><span>Hot tub, thermostats, trash day, and anything quirky about your place.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#chk"/></svg><div><b>Eat and drink</b><span>Your own picks nearby, with a line on why guests will like each one.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#chk"/></svg><div><b>Checkout list</b><span>A short list guests can actually follow, so turnovers go smoother.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#chk"/></svg><div><b>Ask the house</b><span>Guests type a question and get the answer from your guidebook, any hour. If it isn't in there, it tells them to message you.</span></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec band alt" id="pricing">
+    <div class="inner">
+      <div class="sec-head">
+        <p class="eyebrow">Pricing</p>
+        <h2>Free to start. Pay once if you grow.</h2>
+        <p>No subscription and no monthly fee. Your guests never pay anything.</p>
+      </div>
+      <div class="plans">
+        <div class="plan">
+          <h3>Free</h3>
+          <div class="price"><b>$0</b></div>
+          <ul><li>One rental</li><li>Every section, including Ask the house</li><li>Send to renter by text or email</li><li>Printable QR fridge sign</li></ul>
+          <a class="btn line" href="#get">Get the app</a>
+        </div>
+        <div class="plan feat">
+          <h3>Dock &amp; Key Pro</h3>
+          <div class="price"><b>$29.99</b><span>one time</span></div>
+          <ul><li>Unlimited rentals</li><li>Removes the Dock &amp; Key line from your guidebooks</li><li>Restores on a new iPhone with your Apple ID</li></ul>
+          <a class="btn primary" href="#get">Get the app</a>
+        </div>
+      </div>
+      <p class="compare">Most guidebook services charge every month. Dock &amp; Key is yours after one purchase.</p>
+    </div>
+  </section>
+
+  <section class="sec band" id="faq">
+    <div class="inner">
+      <div class="sec-head"><p class="eyebrow">Questions</p><h2>Things hosts ask.</h2></div>
+      <div class="faq">
+        <details><summary>Do my guests need to download an app?</summary><p>No. The guidebook opens in their phone's browser from your text, your email, or the QR sign on the fridge.</p></details>
+        <details><summary>Do I need a website?</summary><p>No. Send to renter works with nothing but your phone. If you do have a website, the app can give you the guidebook as one web file to put there, and the QR sign can point to it.</p></details>
+        <details><summary>What if I change the Wi-Fi password or add a hot tub?</summary><p>Edit it in the app and send the new version. It takes a minute.</p></details>
+        <details><summary>Will Ask the house make things up?</summary><p>No. It only answers from what you wrote in the guidebook. If the answer isn't there, it tells the guest to message you.</p></details>
+        <details><summary>Should I put the door code in it?</summary><p>We suggest sending lock codes through your booking platform instead, since a guidebook can be forwarded.</p></details>
+        <details><summary>Where is my information kept?</summary><p>On your iPhone. Dock &amp; Key has no account and no server, and collects no data. See the <a href="privacy.html">privacy policy</a>.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec band alt" id="get">
+    <div class="inner get">
+      <div class="who">
+        <p class="eyebrow">Get Dock &amp; Key</p>
+        <h2>Ten minutes tonight. Fewer texts all season.</h2>
+        <p>Dock &amp; Key for iPhone is headed to the App Store now. The download link lands right here the day it's approved.</p>
+      </div>
+      <div class="store">
+        <span class="badge" aria-label="Coming to the App Store"><svg aria-hidden="true"><use href="#apple"/></svg>Coming to the App Store</span>
+        <p class="contact-line">Questions? <a href="mailto:support@getdockandkey.com">support@getdockandkey.com</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="band">
+  <div class="inner">
+    <a class="logo" href="#top"><svg aria-hidden="true"><use href="#mark"/></svg>Dock &amp; Key</a>
+    <span>Made in Georgia's Lake Country · <a href="support.html">Support</a> · <a href="privacy.html">Privacy</a></span>
+  </div>
+</footer>
+</body>
+</html>
