@@ -106,7 +106,9 @@ enum HTMLExporter {
         var tabs = "<button class='tab on' data-s='arrive'>Arrival</button><button class='tab' data-s='house'>The house</button>"
         if g.showDock { tabs += "<button class='tab' data-s='dock'>Dock &amp; lake</button>" }
         if !placesHTML.isEmpty { tabs += "<button class='tab' data-s='eat'>Eat &amp; drink</button>" }
-        tabs += "<button class='tab' data-s='out'>Checkout</button><button class='tab' data-s='ask'>Ask the house</button>"
+        tabs += "<button class='tab' data-s='out'>Checkout</button>"
+        // "Ask the house" is a Pro feature.
+        if pro { tabs += "<button class='tab' data-s='ask'>Ask the house</button>" }
 
         var sections = "<section id='arrive'><h2>Arrival</h2><div class='card'><dl class='kv'>\(arrivalRows)</dl></div>\(wifiCard)"
         if !g.emergency.isEmpty { sections += "<div class='card warn'><h3>In an emergency</h3><p>\(esc(g.emergency))</p></div>" }
@@ -125,7 +127,7 @@ enum HTMLExporter {
         }
         sections += "<section id='out' hidden><h2>Checkout by \(esc(g.checkOut))</h2><div class='card'>\(listHTML(g.checkout, ordered: true))</div></section>"
 
-        sections += "<section id='ask' hidden><h2>Ask the house</h2><p class='note'>Answers come only from this guidebook. If it doesn't know, message your host.</p><div class='log' id='log'><div class='msg house'>Hi! Ask me about Wi-Fi, checkout, dinner, or anything else in the house.</div></div><form class='ask' id='ask-form'><input id='q' autocomplete='off' placeholder='Type a question' aria-label='Your question'><button type='submit'>Ask</button></form></section>"
+        if pro { sections += "<section id='ask' hidden><h2>Ask the house</h2><p class='note'>Answers come only from this guidebook. If it doesn't know, message your host.</p><div class='log' id='log'><div class='msg house'>Hi! Ask me about Wi-Fi, checkout, dinner, or anything else in the house.</div></div><form class='ask' id='ask-form'><input id='q' autocomplete='off' placeholder='Type a question' aria-label='Your question'><button type='submit'>Ask</button></form></section>" }
 
         let footerText = pro
             ? "Your guide to \(name)"
@@ -181,7 +183,8 @@ enum HTMLExporter {
           return best?best.a:'That one is not in the guide yet. Message your host and they will get right back to you.';}
         var log=document.getElementById('log');
         function add(t,w){var d=document.createElement('div');d.className='msg '+w;d.textContent=t;log.appendChild(d);d.scrollIntoView({block:'nearest'});}
-        document.getElementById('ask-form').addEventListener('submit',function(e){
+        var af=document.getElementById('ask-form');
+        if(af)af.addEventListener('submit',function(e){
           e.preventDefault();var i=document.getElementById('q');var v=i.value.trim();if(!v)return;
           add(v,'guest');setTimeout(function(){add(answer(v),'house')},300);i.value='';});
         """

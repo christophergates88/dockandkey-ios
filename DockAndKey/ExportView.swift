@@ -9,6 +9,7 @@ struct ExportView: View {
     @State private var link = ""
     @State private var signURL: URL?
     @State private var copiedCode = false
+    @State private var showPaywall = false
 
     var body: some View {
         Form {
@@ -22,8 +23,23 @@ struct ExportView: View {
                             .font(.headline)
                     }
                 }
+                if !pro.isPro {
+                    Button {
+                        showPaywall = true
+                    } label: {
+                        HStack {
+                            Label("Add Ask the house to this guidebook", systemImage: "bubble.left.and.text.bubble.right")
+                            Spacer()
+                            ProTag()
+                        }
+                    }
+                }
             } header: {
                 Text("Send the guidebook")
+            } footer: {
+                if !pro.isPro {
+                    Text("With Pro, guests can type a question and get the answer from your guidebook, any hour.")
+                }
             }
 
             Section {
@@ -44,6 +60,23 @@ struct ExportView: View {
                 Text("The guidebook is one self-contained web file. Put it wherever you host web pages, then paste its web address below to make the QR sign.")
             }
 
+            if !pro.isPro {
+                Section {
+                    Button {
+                        showPaywall = true
+                    } label: {
+                        HStack {
+                            Label("Make a QR fridge sign", systemImage: "qrcode")
+                            Spacer()
+                            ProTag()
+                        }
+                    }
+                } header: {
+                    Text("QR fridge sign")
+                } footer: {
+                    Text("Print a sign for the fridge. Guests scan it and the guidebook opens in their phone's browser.")
+                }
+            } else {
             Section {
                 TextField("https://… (where the guidebook lives)", text: $link)
                     .keyboardType(.URL)
@@ -75,10 +108,15 @@ struct ExportView: View {
             } footer: {
                 Text("Print the sign and put it on the fridge. Guests scan it and the guidebook opens in their phone's browser — no app for them.")
             }
+            }
         }
         .navigationTitle("Send to renter")
         .navigationBarTitleDisplayMode(.inline)
         .task {
+            fileURL = HTMLExporter.writeTempFile(for: g, pro: pro.isPro)
+        }
+        .sheet(isPresented: $showPaywall) { PaywallView() }
+        .onChange(of: pro.isPro) {
             fileURL = HTMLExporter.writeTempFile(for: g, pro: pro.isPro)
         }
         .onChange(of: link) {
@@ -141,5 +179,17 @@ private struct SignView: View {
         .frame(width: 400)
         .background(Color.white)
         .foregroundStyle(Color(red: 0.07, green: 0.19, blue: 0.18))
+    }
+}
+
+/// Small "PRO" capsule for locked rows.
+struct ProTag: View {
+    var body: some View {
+        Text("PRO")
+            .font(.caption2.bold())
+            .padding(.horizontal, 7)
+            .padding(.vertical, 3)
+            .background(Capsule().fill(Color.accentColor.opacity(0.15)))
+            .foregroundStyle(Color.accentColor)
     }
 }

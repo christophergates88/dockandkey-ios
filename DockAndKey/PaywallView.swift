@@ -14,6 +14,8 @@ struct PaywallView: View {
                 Text("Dock & Key Pro")
                     .font(.title.bold())
                 VStack(alignment: .leading, spacing: 10) {
+                    Label("Ask the house: guests type a question, your guidebook answers", systemImage: "checkmark")
+                    Label("QR fridge sign to print", systemImage: "checkmark")
                     Label("Unlimited rentals", systemImage: "checkmark")
                     Label("No Dock & Key line on your guidebooks", systemImage: "checkmark")
                     Label("Paid once, yours for good — no subscription", systemImage: "checkmark")
